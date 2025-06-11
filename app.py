@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
 
 # from routers import sku
-from routers.master_data import router
+from routers.master_data import router as master_data_router
 # from routers import router as api_router
 from database.db_connection import test_db_connection
 
@@ -31,9 +31,9 @@ app.add_middleware(
 )
 
 
-app.include_router(router)
+app.include_router(master_data_router)
 
 
 @app.get("/")
-def read_root():
-    return{"Hello": "Fast API"}
+async def check_server():
+    return {"success" : True, "message" : "Server is working fine"}

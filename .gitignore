@@ -1,6 +1,8 @@
 .venv
 
+# envorionment variable
+.env
 
-__pycache__/
+**/__pycache__/
 
 __pycache__

@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from models import SKUModel
+from models.master_data import SKUModel
 from schemas.user import ExportRequest, AddSKURequest, UpdateSKURequest
 from fastapi import HTTPException
 from sqlalchemy import select
