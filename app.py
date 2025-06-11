@@ -1,9 +1,8 @@
-from fastapi import FastAPI, UploadFile
+from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
+
 # from routers import sku
-import pandas as pd
-from fastapi import FastAPI
 from routers.master_data import router
 # from routers import router as api_router
 from database.db_connection import test_db_connection
@@ -23,8 +22,6 @@ async def lifespan(app:FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 
-
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -40,9 +37,3 @@ app.include_router(router)
 @app.get("/")
 def read_root():
     return{"Hello": "Fast API"}
-
-
-@app.post("/File/upload")
-def upload_file(file: UploadFile):
-    data = json.loads(file.file.read())
-    return {"content": data ,"filename": file.filename}
