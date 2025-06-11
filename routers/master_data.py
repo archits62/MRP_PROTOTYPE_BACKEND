@@ -3,9 +3,7 @@ from fastapi import APIRouter
 from services.dependency import sessionDep
 from utils.response_handler import success_response
 import services.master_data as Master_service
-from schemas.user import ExportRequest
-from schemas.user import AddSKURequest
-from schemas.user import UpdateSKURequest
+from schemas.master_data import ExportRequest, AddSKURequest, UpdateSKURequest
 
 
 router = APIRouter()

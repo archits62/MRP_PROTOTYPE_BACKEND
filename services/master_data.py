@@ -1,8 +1,10 @@
-from sqlalchemy.orm import Session
-from models.master_data import SKUModel
-from schemas.user import ExportRequest, AddSKURequest, UpdateSKURequest
 from fastapi import HTTPException
-from sqlalchemy import select
+from sqlmodel import Session, select
+
+
+from models.master_data import SKUModel
+from schemas.master_data import ExportRequest, AddSKURequest, UpdateSKURequest
+
 
 def export(db: Session, data: ExportRequest):
     try:
@@ -22,7 +24,9 @@ def export(db: Session, data: ExportRequest):
         print("Error.......... export function!\n", err)
         raise HTTPException(500, "Failed to export SKU data.")
     
-    #------Add SKU------------->
+
+
+#------Add SKU------------->
 def add_sku(db: Session, data: AddSKURequest):
     try:
         new_sku = SKUModel(
