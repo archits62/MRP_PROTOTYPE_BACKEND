@@ -2,10 +2,8 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
 
-# from routers import sku
-from routers.master_data import router as master_data_router
-# from routers import router as api_router
 from database.db_connection import test_db_connection
+from routers.master_data import router as master_data_router
 
 origins = [
     "http://localhost:4200",
