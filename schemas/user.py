@@ -16,6 +16,7 @@ class UserPrivate(User):
     id : int
     hashed_password : str
 
+
 class UserPublic(User):
     id : int
 
@@ -28,3 +29,8 @@ class SignupRequest(User):
 class LoginRequest(BaseModel):
     username : str
     password : str
+
+class TokenPayload(BaseModel):
+    id : str | int
+    username : str
+    role : UserRoles
