@@ -2,8 +2,11 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
 
-from database.db_connection import test_db_connection
+from database.db_connection import test_db_connection,create_db_and_tables
+
+from routers.user import router as user_router
 from routers.master_data import router as master_data_router
+
 
 origins = [
     "http://localhost:4200",
@@ -13,7 +16,9 @@ origins = [
 
 @asynccontextmanager
 async def lifespan(app:FastAPI):
-    test_db_connection() # startup operation
+    # startup operation
+    test_db_connection()
+    create_db_and_tables()
     yield
     # cleanup operations, after shutdown
 
@@ -30,6 +35,7 @@ app.add_middleware(
 
 
 app.include_router(master_data_router)
+app.include_router(user_router, prefix="/users",tags=["users"])
 
 
 @app.get("/")

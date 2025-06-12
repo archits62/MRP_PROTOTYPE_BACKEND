@@ -1,6 +1,9 @@
-from sqlmodel import create_engine,Session
+from sqlmodel import create_engine,Session,SQLModel
 
 from config import Config
+
+# import to load models ( creating tables programmatically )
+from models.user import User
 
 
 engine = create_engine(Config.DB_URL,echo=True)
@@ -9,9 +12,6 @@ def get_session():
     with Session(engine) as session:
         yield session
 
-
-# def create_db_and_tables():
-#     SQLModel.metadata.create_all(engine)
 
 def test_db_connection():
     try :
@@ -23,3 +23,10 @@ def test_db_connection():
         print("Error: ", err)
         raise SystemExit("Exiting due to DB connection failure.")
 
+
+def create_db_and_tables():
+    try:
+        SQLModel.metadata.create_all(engine)
+        print("Tables checked/created\n")
+    except Exception as e:
+        print("Table creation error.........! create_db_and_tables function\n",e)
