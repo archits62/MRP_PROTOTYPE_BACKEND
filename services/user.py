@@ -1,10 +1,17 @@
 from fastapi import HTTPException
 from sqlmodel import select
+from argon2 import PasswordHasher
 
 from services.dependency import sessionDep
 from schemas.user import SignupRequest,UserPublic
 from models.user import User as UserModel
 
+
+ph = PasswordHasher()
+
+def get_hashed_password(plain_password:str):
+    return ph.hash(plain_password)
+  
 
 def get_user_by_username(db:sessionDep,username : str):
     try:
@@ -12,6 +19,7 @@ def get_user_by_username(db:sessionDep,username : str):
         return db.exec(query).first()
     except Exception as e:
         return None
+
 
 
 def register(db : sessionDep , data : SignupRequest) -> UserPublic:
@@ -22,13 +30,17 @@ def register(db : sessionDep , data : SignupRequest) -> UserPublic:
         if user:
             raise HTTPException(400,"User already registerd with this name.")
 
+
+        hashed_password = get_hashed_password(data.password)
+
         # store user into db
         new_user = UserModel(
             username=data.username,
             email=data.email,
             role=data.role,
-            hashed_password=data.password
+            hashed_password=hashed_password
         )
+
 
         db.add(new_user)
         db.commit()
