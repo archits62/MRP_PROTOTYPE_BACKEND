@@ -5,7 +5,7 @@ class Cabinet(SQLModel,table=True):
     __tablename__ = "cabinets"
 
     id : int | None = Field(default=None,primary_key= True)
-    cabinet_id : str = Field(unique=True,description="Cabinet ID")
+    sku_code : str = Field(unique=True,description="SKU Code")
     product_line : str
     product_category : str
     product_family : str

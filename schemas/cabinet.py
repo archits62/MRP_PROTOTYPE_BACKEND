@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from datetime import datetime
 
 class CabinetCreate(BaseModel):
-    cabinet_id: str
+    sku_code: str
     product_line: str
     product_category: str
     product_family: str
@@ -18,7 +18,7 @@ class CabinetCreate(BaseModel):
 
 class CabinetRead(BaseModel):
     id : int
-    cabinet_id: str
+    sku_code: str
     product_line: str
     product_category: str
     product_family: str
@@ -36,7 +36,7 @@ class CabinetRead(BaseModel):
 
 class CabinetUpdate(BaseModel):
     # id : int # will come form url path ??
-    cabinet_id: str | None
+    sku_code: str | None
     product_line: str | None
     product_category: str | None
     product_family: str | None

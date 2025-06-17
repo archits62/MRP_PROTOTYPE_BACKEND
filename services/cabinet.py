@@ -6,9 +6,9 @@ from schemas.cabinet import CabinetCreate, CabinetRead, CabinetUpdate
 from models.cabinet import Cabinet as CabinetModel
 
 
-def get_cabinet_by_cabinet_id(db: sessionDep, cabinet_id: str):
+def get_cabinet_by_sku_code(db: sessionDep, sku_code: str):
     try:
-        query = select(CabinetModel).where(CabinetModel.cabinet_id == cabinet_id)
+        query = select(CabinetModel).where(CabinetModel.sku_code == sku_code)
         return db.exec(query).first()
     except Exception as e:
         return None
@@ -16,10 +16,10 @@ def get_cabinet_by_cabinet_id(db: sessionDep, cabinet_id: str):
 
 def create_cabinet(db: sessionDep, data: CabinetCreate) -> CabinetRead:
     try:
-        # Check if cabinet_id already exists
-        existing_cabinet = get_cabinet_by_cabinet_id(db, data.cabinet_id)
+        # Check if sku_code already exists
+        existing_cabinet = get_cabinet_by_sku_code(db, data.sku_code)
         if existing_cabinet:
-            raise HTTPException(400, "Cabinet ID already exists")
+            raise HTTPException(400, "SKU Code already exists")
 
         new_cabinet = CabinetModel(**data.model_dump())
 
@@ -40,16 +40,16 @@ def create_cabinet(db: sessionDep, data: CabinetCreate) -> CabinetRead:
 
 def create_cabinets_bulk(db: sessionDep, cabinets_data: list[CabinetCreate]) -> list[CabinetRead]:
     try:
-        # Check for duplicate cabinet_ids in the input data
-        cabinet_ids = [cabinet.cabinet_id for cabinet in cabinets_data]
-        if len(cabinet_ids) != len(set(cabinet_ids)):
-            raise HTTPException(400, "Duplicate cabinet IDs found in input data")
+        # Check for duplicate sku_codes in the input data
+        sku_codes = [cabinet.sku_code for cabinet in cabinets_data]
+        if len(sku_codes) != len(set(sku_codes)):
+            raise HTTPException(400, "Duplicate SKU codes found in input data")
 
-        # Check if any cabinet_id already exists in database
+        # Check if any sku_code already exists in database
         for cabinet_data in cabinets_data:
-            existing_cabinet = get_cabinet_by_cabinet_id(db, cabinet_data.cabinet_id)
+            existing_cabinet = get_cabinet_by_sku_code(db, cabinet_data.sku_code)
             if existing_cabinet:
-                raise HTTPException(400, f"Cabinet ID '{cabinet_data.cabinet_id}' already exists")
+                raise HTTPException(400, f"SKU Code '{cabinet_data.sku_code}' already exists")
 
         # Create all cabinets
         new_cabinets = []
@@ -112,11 +112,11 @@ def update_cabinet(db: sessionDep, cabinet_id: int, data: CabinetUpdate) -> Cabi
         if not cabinet:
             raise HTTPException(status_code=404, detail="Cabinet not found")
         
-        # Check if cabinet_id is being updated and if it already exists
-        if data.cabinet_id and data.cabinet_id != cabinet.cabinet_id:
-            existing_cabinet = get_cabinet_by_cabinet_id(db, data.cabinet_id)
+        # Check if sku_code is being updated and if it already exists
+        if data.sku_code and data.sku_code != cabinet.sku_code:
+            existing_cabinet = get_cabinet_by_sku_code(db, data.sku_code)
             if existing_cabinet:
-                raise HTTPException(400, "Cabinet ID already exists")
+                raise HTTPException(400, "SKU Code already exists")
         
         # Update only provided fields
         update_data = data.model_dump(exclude_unset=True)
