@@ -4,9 +4,10 @@ from config import Config
 
 # import to load models ( creating tables programmatically )
 from models.user import User
+from models.cabinet import Cabinet
 
 
-engine = create_engine(Config.DB_URL,echo=True)
+engine = create_engine(Config.DB_URL)
 
 def get_session():
     with Session(engine) as session:

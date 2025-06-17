@@ -6,6 +6,7 @@ from database.db_connection import test_db_connection,create_db_and_tables
 
 from routers.user import router as user_router
 from routers.master_data import router as master_data_router
+from routers.cabinet import router as cabinet_router
 
 
 origins = [
@@ -36,6 +37,7 @@ app.add_middleware(
 
 app.include_router(master_data_router)
 app.include_router(user_router, prefix="/users",tags=["users"])
+app.include_router(cabinet_router, prefix="/cabinets",tags=["cabinets"])
 
 
 @app.get("/")

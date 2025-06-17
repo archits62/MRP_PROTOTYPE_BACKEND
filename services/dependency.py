@@ -28,8 +28,6 @@ def get_current_user(db:sessionDep, token : Annotated[str, Depends( oauth2_schem
 
         user = db.exec(select(UserModel).where(UserModel.id == user_id)).first()
 
-        print( user , "user in get current user")
-
 
         if not user:
             raise UserNotFoundError(user_id)
